@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.udacity.databinding.ActivityMainBinding
@@ -33,8 +34,30 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
-        binding.contentMain.customButton.setOnClickListener {
-            download()
+        binding.contentMain.button.setOnClickListener {
+            if (URL != "")
+                download()
+            else
+                Toast.makeText(this, "please select the file to download", Toast.LENGTH_SHORT)
+                    .show()
+        }
+
+        binding.contentMain.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+
+            when (checkedId) {
+                R.id.btn_radio_glide -> {
+                    URL = URL_GLIDE
+                    fileName = getString(R.string.radio_glide)
+                }
+                R.id.btn_radio_loadApp -> {
+                    URL = URL_LOAD_APP
+                    fileName = getString(R.string.radio_loadApp)
+                }
+                R.id.btn_radio_retrofit -> {
+                    URL = URL_RETROFIT
+                    fileName = getString(R.string.radio_retrofit)
+                }
+            }
         }
     }
 
@@ -51,22 +74,36 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun download() {
-        val request =
-            DownloadManager.Request(Uri.parse(URL))
-                .setTitle(getString(R.string.app_name))
-                .setDescription(getString(R.string.app_description))
-                .setRequiresCharging(false)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true)
+        try {
+            val request =
+                DownloadManager.Request(Uri.parse(URL))
+                    .setTitle(fileName)
+                    .setDescription(getString(R.string.app_description))
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true)
 
-        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        downloadID =
-            downloadManager.enqueue(request)// enqueue puts the download request in the queue.
+            val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            downloadID =
+                downloadManager.enqueue(request)// enqueue puts the download request in the queue.
+            Toast.makeText(this, "file downloaded", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {
-        private const val URL =
-            "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip"
+        private var URL = ""
+        private var fileName = ""
+
+        private const val URL_GLIDE =
+            "https://github.com/bumptech/glide"
+        private const val URL_LOAD_APP =
+            "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter"
+        private const val URL_RETROFIT =
+            "https://github.com/square/retrofit"
+
         private const val CHANNEL_ID = "channelId"
     }
 
