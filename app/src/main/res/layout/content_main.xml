@@ -44,32 +44,22 @@
             android:text="@string/radio_retrofit" />
     </RadioGroup>
 
-    <EditText
+
+    <com.udacity.LoadingButton
+        android:id="@+id/loading_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group" />
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Button"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:loadingBackgroundColor="?attr/colorPrimaryDark"
+        app:loadingDefaultBackgroundColor="?attr/colorPrimary"
+        app:loadingDefaultText="Download"
+        app:loadingText="We are loading"
+        app:loadingTextColor="@color/white" />
 
-
-    <!--    <com.udacity.LoadingButton-->
-    <!--        android:id="@+id/custom_button"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="60dp"-->
-    <!--        android:layout_margin="20dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
