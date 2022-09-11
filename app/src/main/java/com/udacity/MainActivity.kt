@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
 
         createChannel(
@@ -76,6 +75,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(receiver);
+
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
